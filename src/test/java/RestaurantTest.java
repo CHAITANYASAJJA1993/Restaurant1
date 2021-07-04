@@ -3,6 +3,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -71,4 +73,31 @@ class RestaurantTest {
                 ()->restaurant.removeFromMenu("French fries"));
     }
     //<<<<<<<<<<<<<<<<<<<<<<<MENU>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    //Add more item and check the sum again
+
+    @Test
+    public void selecting_items_from_menu_and_checking_if_the_total_cost_is_equal_to_the_sum_of_price_of_all_items_added_in_the_menu() {
+
+        //Act
+        List<Item> selectedItems = new ArrayList<>();
+        Item temp = restaurant.findItemByName("Sweet corn soup");
+        if (temp != null)
+            selectedItems.add(temp);
+        temp = restaurant.findItemByName("Vegetable lasagne");
+        if (temp != null)
+            selectedItems.add(temp);
+        // Arrange
+        int totalCost = restaurant.getTotalBillOfItems(selectedItems);
+
+        // Assert
+        assertEquals(totalCost, 300);
+
+        //Add more item and check the sum again
+        restaurant.addToMenu("Butter ChickenRoll", 300);
+        temp = restaurant.findItemByName("Butter ChickenRoll");
+        if (temp != null)
+            selectedItems.add(temp);
+        totalCost = restaurant.getTotalBillOfItems(selectedItems);
+        assertEquals(totalCost, 600);
+    }
 }
